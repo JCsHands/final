@@ -16,7 +16,7 @@ import random
 
 class WhackAMole(EasyFrame):
     def __init__(self):
-        EasyFrame.__init__(self, title = "Temp Converter")
+        EasyFrame.__init__(self, title = "Whack-A-Mole")
         self.setSize(600, 600)
         #Instructions
         self.addLabel(text = "(0, 0)", row = 0, column = 0)
