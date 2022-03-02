@@ -1,14 +1,24 @@
+'''
+Program: Whack-A-Mole
+Author: Jacob Carlisle
+Propose: Creates an amusing game of whack-a-mole
+Variables:
+
+
+
+Inputs:
+Outputs:
+'''
+
 from breezypythongui import EasyFrame
-from tkinter import PhotoImage
-from tkinter import font
 import time
+import random
 
-class LayoutDemo(EasyFrame):
-    """Displays labels in the quadrants."""
-
+class WhackAMole(EasyFrame):
     def __init__(self):
-        """Sets up the window and the labels."""
-        EasyFrame.__init__(self)
+        EasyFrame.__init__(self, title = "Temp Converter")
+        self.setSize(600, 600)
+        #Instructions
         self.addLabel(text = "(0, 0)", row = 0, column = 0)
         self.addLabel(text = "(0, 1)", row = 0, column = 1)
         self.addLabel(text = "(0, 2)", row = 0, column = 2)
@@ -34,20 +44,24 @@ class LayoutDemo(EasyFrame):
         self.addLabel(text = "(4, 2)", row = 4, column = 2)
         self.addLabel(text = "(4, 3)", row = 4, column = 3)
         self.addLabel(text = "(4, 4)", row = 4, column = 4)
-        self.addButton(text = "Here I am", row = 1, column = 0,)
+        self.mole = self.addButton(text = "Mole", row = 2, column = 2, command = self.moleMover)
+        #self.countdown()
 
-def countdown(t):
+
+    def moleMover(self):
+            r = random.randint(0, 3)
+            c = random.randint(0, 3)
+            self.mole.grid(row = r, column = c)
     
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1   
+    def countdown(self):
+        while 5:
+            divmod(5, 60)
+            time.sleep(1)
+            5 - 1
+        self.moleMover
 
 def main():
-    """Instantiate and pop up the window."""
-    LayoutDemo().mainloop()
+    WhackAMole().mainloop()
+
 if __name__ == "__main__":
     main()
-
