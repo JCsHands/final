@@ -1,8 +1,3 @@
-Jingle 0
-Himer 0
-Jacob 5
-Jacob 1
-Lydea 0
-Jacob 0
- 0
- 0
+Jacob 10
+John 10
+Jeff 3

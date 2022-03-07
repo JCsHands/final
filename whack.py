@@ -27,11 +27,11 @@ yardImg = PhotoImage(file='yard.gif')
 
 def moleMover():
     '''Moves the mole around by randomly generating his row and column'''
-        global moleCounter
-        r = random.randint(1, 5)
-        c = random.randint(0, 5)
-        mole.grid(row = r, column = c)
-        scoreKeeper()
+    global moleCounter
+    r = random.randint(1, 5)
+    c = random.randint(0, 5)
+    mole.grid(row = r, column = c)
+    scoreKeeper()
 
 def scoreKeeper():
     '''Increments and displays the moleCounter var (Players Score)'''
@@ -39,6 +39,7 @@ def scoreKeeper():
     moleCounter += 1
     print(moleCounter)
     heading01.config(text = moleCounter)
+    
 
 def wrongBox():
     '''Decrements and displays the LifeCounter var (players Lives)'''
@@ -57,50 +58,69 @@ def endGame():
 
 def newGame():
     '''Resets the moleCounter & LifeCounter vars and places the "mole" in the middle'''
+    global moleCounter
+    global LifeCounter
     mole.grid(row = 3, column = 3)
     moleCounter = 0
     LifeCounter = 3
+    heading06.config(text = LifeCounter)
+    heading01.config(text = moleCounter)
+    mole['state'] = ACTIVE
+
 
 #    ---   High Score Window    ---   
 
 def highScoreWindow():
-    '''Launches the High Score window'''
-   WaMHS = Tk()
-   WaMHS.title("Whack-a-Mole Leader Board")
-   WaMHS.iconbitmap("mole.ico")
-   WaMHS.geometry("400x360")
 
-   def recordScore():
-       '''Writes the users entered name and score to the scores.txt file'''
-      global playerName
-      playerName = nameInput.get()
-      playerScore = (playerName + " " + str(moleCounter) + "\n")
-      f = open("scores.txt", 'a')
-      f.write(playerScore)
-      f.close()
-      print(playerName + " " + str(moleCounter))
+    WaMHS = Tk()
+    WaMHS.title("Whack-a-Mole Leader Board")
+    WaMHS.iconbitmap("mole.ico")
+    WaMHS.geometry("400x600")
 
-   def displayScores():
-       '''Displays the content of the scores.txt file'''
-       f = open('scores.txt', 'r')
-       topScores = f.read()
-       scores.insert('end', topScores)
-       f.close()
+    def recordScore():
+        global playerName
+        playerName = nameInput.get()
+        if playerName == "":
+            messagebox.showerror('Please Enter Your Name')
+        else:
+            playerName = playerName.replace(' ', '_')
+            playerScore = (playerName + " " + str(moleCounter) + "\n")
+            f = open("scores.txt", 'a')
+            f.write(playerScore)
+            f.close()
+            print(playerName)
+
+    def displayScores():
+        '''Displays the content of the scores.txt file'''
+        global topScores
+        f = open('scores.txt', 'r')
+        topScores = f.read()
+        f.close()
+
+    def inputScores():
+        playerScores = {}
+        with open('scores.txt') as f:
+            for line in f:
+                (k, v) = line.split()
+                playerScores[k] = v
+        print(playerScores)
+    inputScores()
+    displayScores()
 
 
 
 #Widgets
-   Banner = Label(WaMHS, text="High Scores")
-   nameInput = Entry(WaMHS)
-   submitName = Button(WaMHS, text="Enter Your Name", command=recordScore)
-   scores = Text(WaMHS, width=40, height=20)
+    Banner = Label(WaMHS, text="High Scores")
+    nameInput = Entry(WaMHS)
+    submitName = Button(WaMHS, text="Enter Your Name", command=recordScore)
+    scores = Label(WaMHS, text=topScores)
 
-   
-#Layout
-   Banner.pack()
-   nameInput.pack()
-   submitName.pack()
-   scores.pack()
+
+    #Layout
+    Banner.pack()
+    nameInput.pack()
+    submitName.pack()
+    scores.pack()
 
     
     
