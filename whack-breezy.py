@@ -119,3 +119,19 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+'''   
+yardButtons = []
+    c = 1
+    while c < 36:
+        yardItem = 'yard' + str(c)
+        yardButtons.append(yardItem)
+        c += 1
+    
+    for x in yardButtons:
+        print(x)
+        x.config(state = 'DISABLED')
+'''

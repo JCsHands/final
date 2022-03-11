@@ -11,12 +11,13 @@ Outputs: users scores are stored in a scores.txt file.
 '''
 
 
-import time
+from time import time
 import random
 from tkinter import *
 from tkinter import messagebox
 moleCounter = 0
 LifeCounter = 3
+difficulty = ""
 
 WaM = Tk()
 WaM.title("Whack-a-Mole")
@@ -27,18 +28,29 @@ yardImg = PhotoImage(file='yard.gif')
 
 def moleMover():
     '''Moves the mole around by randomly generating his row and column'''
-    global moleCounter
+    global difficulty
+    global LifeCounter
+    difficulty = random.randrange(3000, 4000)
     r = random.randint(1, 5)
     c = random.randint(0, 5)
     mole.grid(row = r, column = c)
-    scoreKeeper()
+    if LifeCounter > 0:
+        WaM.after(difficulty, moleMover)
+        print(LifeCounter)
+    
+def moleState(alive):
+    if alive == True:
+        moleMover()
+    elif alive == False:
+        endGame()
+        
 
-def scoreKeeper():
+def rightBox():
     '''Increments and displays the moleCounter var (Players Score)'''
     global moleCounter
     moleCounter += 1
-    print(moleCounter)
     heading01.config(text = moleCounter)
+    moleState(True)
     
 
 def wrongBox():
@@ -46,13 +58,13 @@ def wrongBox():
     global LifeCounter
     LifeCounter -= 1
     heading06.config(text = LifeCounter)
-    print(LifeCounter)
     if LifeCounter == 0:
-        endGame()
+        moleState(False)
 
 def endGame():
     '''Disables the mole and launches the High Score window'''
     mole['state'] = DISABLED
+    mole.grid(row = 3, column = 3)
     highScoreWindow()
 
 
@@ -60,13 +72,16 @@ def newGame():
     '''Resets the moleCounter & LifeCounter vars and places the "mole" in the middle'''
     global moleCounter
     global LifeCounter
-    mole.grid(row = 3, column = 3)
     moleCounter = 0
     LifeCounter = 3
     heading06.config(text = LifeCounter)
     heading01.config(text = moleCounter)
     mole['state'] = ACTIVE
+    moleMover()
 
+
+def scoreKeeper():
+    pass
 
 #    ---   High Score Window    ---   
 
@@ -77,7 +92,7 @@ def highScoreWindow():
     WaMHS.iconbitmap("mole.ico")
     WaMHS.geometry("400x600")
 
-    def recordScore():
+    def setScore():
         global playerName
         playerName = nameInput.get()
         if playerName == "":
@@ -89,30 +104,21 @@ def highScoreWindow():
             f.write(playerScore)
             f.close()
             print(playerName)
-
     def displayScores():
         '''Displays the content of the scores.txt file'''
         global topScores
         f = open('scores.txt', 'r')
         topScores = f.read()
         f.close()
-
-    def inputScores():
-        playerScores = {}
-        with open('scores.txt') as f:
-            for line in f:
-                (k, v) = line.split()
-                playerScores[k] = v
-        print(playerScores)
-    inputScores()
     displayScores()
+
 
 
 
 #Widgets
     Banner = Label(WaMHS, text="High Scores")
     nameInput = Entry(WaMHS)
-    submitName = Button(WaMHS, text="Enter Your Name", command=recordScore)
+    submitName = Button(WaMHS, text="Enter Your Name", command=setScore)
     scores = Label(WaMHS, text=topScores)
 
 
@@ -230,7 +236,7 @@ yard35.grid(row=5, column=6)
 
 #    ^---   End Yard   ---^
 
-mole = Button(WaM, image=moleImg, command=moleMover)
+mole = Button(WaM, image=moleImg, command= rightBox)
 mole.grid(row=3, column=3)
 
 WaM.mainloop()
