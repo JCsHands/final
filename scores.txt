@@ -1,4 +1,2 @@
-Jacob 10
-John 10
-Jeff 3
-Jenn 3
+Player1 7
+Jeff 10

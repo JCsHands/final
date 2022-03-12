@@ -3,21 +3,21 @@ Program: Whack-A-Mole
 Author: Jacob Carlisle
 Propose: Creates an amusing game of whack-a-mole
 Variables:
-moleCounter
-LifeCounter
+moleCounter = Counts how many time's you've whacked the mole.
+LifeCounter = Sets and displays how many lives a user has.
+playerName = Name entered by user on the Highscore window
 
 Inputs:
 Outputs: users scores are stored in a scores.txt file.
 '''
 
-
+from scoreKeeper import *
 from time import time
 import random
 from tkinter import *
 from tkinter import messagebox
 moleCounter = 0
 LifeCounter = 3
-difficulty = ""
 
 WaM = Tk()
 WaM.title("Whack-a-Mole")
@@ -36,9 +36,9 @@ def moleMover():
     mole.grid(row = r, column = c)
     if LifeCounter > 0:
         WaM.after(difficulty, moleMover)
-        print(LifeCounter)
     
 def moleState(alive):
+    '''Decideds if the Mole should continue moving around the screen'''
     if alive == True:
         moleMover()
     elif alive == False:
@@ -80,9 +80,6 @@ def newGame():
     moleMover()
 
 
-def scoreKeeper():
-    pass
-
 #    ---   High Score Window    ---   
 
 def highScoreWindow():
@@ -91,19 +88,19 @@ def highScoreWindow():
     WaMHS.title("Whack-a-Mole Leader Board")
     WaMHS.iconbitmap("mole.ico")
     WaMHS.geometry("400x600")
+    
 
     def setScore():
         global playerName
+        global moleCounter
         playerName = nameInput.get()
+        scoreKeeping.loadScores()
         if playerName == "":
             messagebox.showerror('Please Enter Your Name')
         else:
-            playerName = playerName.replace(' ', '_')
-            playerScore = (playerName + " " + str(moleCounter) + "\n")
-            f = open("scores.txt", 'a')
-            f.write(playerScore)
-            f.close()
-            print(playerName)
+            scoreKeeping.addScore(playerName, moleCounter)
+            scoreKeeping.saveScores()
+            scoreKeeping.loadScores()
     def displayScores():
         '''Displays the content of the scores.txt file'''
         global topScores
@@ -115,8 +112,10 @@ def highScoreWindow():
 
 
 
+
 #Widgets
     Banner = Label(WaMHS, text="High Scores")
+    playersScore = Label(WaMHS, text="Your Score :"+ str(moleCounter))
     nameInput = Entry(WaMHS)
     submitName = Button(WaMHS, text="Enter Your Name", command=setScore)
     scores = Label(WaMHS, text=topScores)
@@ -124,6 +123,7 @@ def highScoreWindow():
 
     #Layout
     Banner.pack()
+    playersScore.pack()
     nameInput.pack()
     submitName.pack()
     scores.pack()
@@ -139,7 +139,7 @@ heading00 = Label(WaM, text="Score:")
 heading01 = Label(WaM, text=moleCounter)
 heading02 = Button(WaM, text="New Game", command = newGame)
 heading03 = Button(WaM, text="High Scores", command = highScoreWindow)
-heading04 = Button(WaM, text="End Game")
+heading04 = Button(WaM, text="End Game", command=endGame)
 heading05 = Label(WaM, text="Lives Left:")
 heading06 = Label(WaM, text=LifeCounter)
 
