@@ -237,6 +237,5 @@ yard35.grid(row=5, column=6)
 #    ^---   End Yard   ---^
 
 mole = Button(WaM, image=moleImg, command= rightBox)
-mole.grid(row=3, column=3)
 
 WaM.mainloop()
