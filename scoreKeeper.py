@@ -44,8 +44,8 @@ class scoreKeeping:
             for key, value in scores.items():
                 f.write('%s %s\n' % (key, value))
 
-scoreKeeping.sortScores()
+#scoreKeeping.sortScores()
 #scoreKeeping.addScore("Bill", 14)
-scoreKeeping.saveScores()
+#scoreKeeping.saveScores()
 
 

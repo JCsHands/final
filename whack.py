@@ -68,6 +68,7 @@ def endGame():
     highScoreWindow()
 
 
+
 def newGame():
     '''Resets the moleCounter & LifeCounter vars and places the "mole" in the middle'''
     global moleCounter
@@ -109,6 +110,16 @@ def highScoreWindow():
         f.close()
     displayScores()
 
+    def exit():
+        if WaMHS.winfo_exists() == True:
+            WaMHS.destroy()
+        
+        if WaM.winfo_exists() == True:
+            WaM.destroy()
+        else:
+            print("Didn't work")
+
+
 
 
 
@@ -139,7 +150,7 @@ heading00 = Label(WaM, text="Score:")
 heading01 = Label(WaM, text=moleCounter)
 heading02 = Button(WaM, text="New Game", command = newGame)
 heading03 = Button(WaM, text="High Scores", command = highScoreWindow)
-heading04 = Button(WaM, text="End Game", command=endGame)
+heading04 = Button(WaM, text="Exit Game", command=exit)
 heading05 = Label(WaM, text="Lives Left:")
 heading06 = Label(WaM, text=LifeCounter)
 
